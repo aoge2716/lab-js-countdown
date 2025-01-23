@@ -11,23 +11,26 @@ btn.addEventListener("click",startCountdown);
 
 // ITERATION 2: Start Countdown
 function startCountdown() {
+
+  showToast("start countdown!");
   // disable timer once button is clicked
   btn.disabled = true;
-  console.log("startCountdown called!");
-  // get the time element 
   const timer = document.querySelector("#time");
-  // start interval for the countdown
+  
   const interval = setInterval(()=>{
     remainingTime--;
     // clear interval once time reaches 0
-    if (remainingTime<1){
+    if(remainingTime === 5){
+      showToast("Half way thru!");
+    }else if (remainingTime<1){
       clearInterval(interval);
       console.log("timeUP");
       // reset timer 
       remainingTime = 10;
       console.log("end of code ", remainingTime);
-      // show toast with custom message
-      showToast("yoyo");
+      
+      showToast("Time up");
+      btn.disabled=false;
     }
     // timer.textContent = "";
     timer.textContent = remainingTime;
@@ -41,16 +44,20 @@ function startCountdown() {
 // ITERATION 3: Show Toast
 function showToast(message) {
   console.log("showToast called!");
-  const toast = document.querySelector("#toast");
-  toast.style.visibility = "visible";
   // change the text content for the toast if theres message passed to the function
-  if (message){
-    toast.firstElementChild.textContent = message;
-  }
+  const toast = document.querySelector("#toast");
+ 
+  toast.firstElementChild.textContent = message;
+  toast.classList.add('show');
+  // remove show class after the fadeout animation so that it can be added later 
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2000);
+  
+  
   // listen to the close button
   const toastBtn = document.querySelector("#close-toast");
   toastBtn.addEventListener("click",()=>{
-    btn.disabled=false;
-    toast.style.visibility = "hidden";
+    toast.classList.remove('show');
   });
 }
